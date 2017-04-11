@@ -1,0 +1,2846 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for node-npmtest-jshint/jshint/src/scope-manager.js</title>
+    <meta charset="utf-8">
+    <style>
+        body, html {
+            margin:0; padding: 0;
+        }
+        body {
+            font-family: Arial, Helvetica;
+            font-size: 10pt;
+        }
+        div.header, div.footer {
+            background: #eee;
+            padding: 1em;
+        }
+        div.header {
+            height: 160px;
+            padding: 0 1em 0 1em;
+            z-index: 100;
+            position: fixed;
+            top: 0;
+            border-bottom: 1px solid #666;
+            width: 100%;
+        }
+        div.footer {
+            border-top: 1px solid #666;
+        }
+        div.body {
+            margin-top: 170px;
+        }
+        div.meta {
+            font-size: 90%;
+            text-align: center;
+        }
+        h1, h2, h3 {
+            font-weight: normal;
+        }
+        h1 {
+            font-size: 12pt;
+        }
+        h2 {
+            font-size: 10pt;
+        }
+        pre {
+            font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            tab-size: 2;
+        }
+
+        div.path { font-size: 110%; }
+        div.path a:link, div.path a:visited { color: #000; }
+        table.coverage { border-collapse: collapse; margin:0; padding: 0 }
+
+        table.coverage td {
+            margin: 0;
+            padding: 0;
+            color: #111;
+            vertical-align: top;
+        }
+        table.coverage td.line-count {
+            width: 50px;
+            text-align: right;
+            padding-right: 5px;
+        }
+        table.coverage td.line-coverage {
+            color: #777 !important;
+            text-align: right;
+            border-left: 1px solid #666;
+            border-right: 1px solid #666;
+        }
+
+        table.coverage td.text {
+        }
+
+        table.coverage td span.cline-any {
+            display: inline-block;
+            padding: 0 5px;
+            width: 40px;
+        }
+        table.coverage td span.cline-neutral {
+            background: #eee;
+        }
+        table.coverage td span.cline-yes {
+            background: #b5d592;
+            color: #999;
+        }
+        table.coverage td span.cline-no {
+            background: #fc8c84;
+        }
+
+        .cstat-yes { color: #111; }
+        .cstat-no { background: #fc8c84; color: #111; }
+        .fstat-no { background: #ffc520; color: #111 !important; }
+        .cbranch-no { background:  yellow !important; color: #111; }
+
+        .cstat-skip { background: #ddd; color: #111; }
+        .fstat-skip { background: #ddd; color: #111 !important; }
+        .cbranch-skip { background: #ddd !important; color: #111; }
+
+        .missing-if-branch {
+            display: inline-block;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: black;
+            color: yellow;
+        }
+
+        .skip-if-branch {
+            display: none;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: #ccc;
+            color: white;
+        }
+
+        .missing-if-branch .typ, .skip-if-branch .typ {
+            color: inherit !important;
+        }
+
+        .entity, .metric { font-weight: bold; }
+        .metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }
+        .metric small { font-size: 80%; font-weight: normal; color: #666; }
+
+        div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }
+        div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }
+        div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }
+        div.coverage-summary th.file { border-right: none !important; }
+        div.coverage-summary th.pic { border-left: none !important; text-align: right; }
+        div.coverage-summary th.pct { border-right: none !important; }
+        div.coverage-summary th.abs { border-left: none !important; text-align: right; }
+        div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }
+        div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }
+        div.coverage-summary td.file { text-align: right; border-left: 1px solid #666; white-space: nowrap;  }
+        div.coverage-summary td.pic { min-width: 120px !important;  }
+        div.coverage-summary a:link { color: #000; }
+        div.coverage-summary a:visited { color: #333; }
+        div.coverage-summary tfoot td { border-top: 1px solid #666; }
+
+        div.coverage-summary .yui3-datatable-sort-indicator, div.coverage-summary .dummy-sort-indicator {
+            height: 10px;
+            width: 7px;
+            display: inline-block;
+            margin-left: 0.5em;
+        }
+        div.coverage-summary .yui3-datatable-sort-indicator {
+            background: no-repeat scroll 0 0 transparent;
+        }
+        div.coverage-summary .yui3-datatable-sorted .yui3-datatable-sort-indicator {
+            background-position: 0 -20px;
+        }
+        div.coverage-summary .yui3-datatable-sorted-desc .yui3-datatable-sort-indicator {
+            background-position: 0 -10px;
+        }
+
+        .high { background: #b5d592 !important; }
+        .medium { background: #ffe87c !important; }
+        .low { background: #fc8c84 !important; }
+
+        span.cover-fill, span.cover-empty {
+            display:inline-block;
+            border:1px solid #444;
+            background: white;
+            height: 12px;
+        }
+        span.cover-fill {
+            background: #ccc;
+            border-right: 1px solid #444;
+        }
+        span.cover-empty {
+            background: white;
+            border-left: none;
+        }
+        span.cover-full {
+            border-right: none !important;
+        }
+        pre.prettyprint {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .com { color: #999 !important; }
+        .ignore-none { color: #999; font-weight: normal; }
+
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1 style="font-weight: bold;">
+        <a href="https://github.com/npmtest/node-npmtest-jshint">npmtest-jshint (v0.0.1)</a>
+    </h1>
+    <h1>Code coverage report for <span class="entity">node-npmtest-jshint/jshint/src/scope-manager.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">4.55% <small>(15 / 330)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">0% <small>(0 / 284)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">0% <small>(0 / 43)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">4.55% <small>(15 / 330)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">node-npmtest-jshint/jshint/src/</a> &#187; scope-manager.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+855
+856
+857
+858
+859
+860
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+&nbsp;
+var _      = require("lodash");
+var events = require("events");
+&nbsp;
+// Used to denote membership in lookup tables (a primitive value such as `true`
+// would be silently rejected for the property name "__proto__" in some
+// environments)
+var marker = {};
+&nbsp;
+/**
+ * Creates a scope manager that handles variables and labels, storing usages
+ * and resolving when variables are used and undefined
+ */
+var scopeManager = <span class="fstat-no" title="function not covered" >function(state, predefined, exported, declared) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  var _current;</span>
+<span class="cstat-no" title="statement not covered" >  var _scopeStack = [];</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function _newScope(type) {</span>
+<span class="cstat-no" title="statement not covered" >    _current = {</span>
+      "(labels)": Object.create(null),
+      "(usages)": Object.create(null),
+      "(breakLabels)": Object.create(null),
+      "(parent)": _current,
+      "(type)": type,
+      "(params)": (type === "functionparams" || type === "catchparams") ? [] : null
+    };
+<span class="cstat-no" title="statement not covered" >    _scopeStack.push(_current);</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  _newScope("global");</span>
+<span class="cstat-no" title="statement not covered" >  _current["(predefined)"] = predefined;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  var _currentFunctBody = _current; </span>// this is the block after the params = function
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  var usedPredefinedAndGlobals = Object.create(null);</span>
+<span class="cstat-no" title="statement not covered" >  var impliedGlobals = Object.create(null);</span>
+<span class="cstat-no" title="statement not covered" >  var unuseds = [];</span>
+<span class="cstat-no" title="statement not covered" >  var emitter = new events.EventEmitter();</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function warning(code, token) {</span>
+<span class="cstat-no" title="statement not covered" >    emitter.emit("warning", {</span>
+      code: code,
+      token: token,
+      data: _.slice(arguments, 2)
+    });
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function error(code, token) {</span>
+<span class="cstat-no" title="statement not covered" >    emitter.emit("warning", {</span>
+      code: code,
+      token: token,
+      data: _.slice(arguments, 2)
+    });
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function _setupUsages(labelName) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!_current["(usages)"][labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >      _current["(usages)"][labelName] = {</span>
+        "(modified)": [],
+        "(reassigned)": [],
+        "(tokens)": []
+      };
+    }
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  var _getUnusedOption = <span class="fstat-no" title="function not covered" >function(unused_opt) {</span></span>
+<span class="cstat-no" title="statement not covered" >    if (unused_opt === undefined) {</span>
+<span class="cstat-no" title="statement not covered" >      unused_opt = state.option.unused;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (unused_opt === true) {</span>
+<span class="cstat-no" title="statement not covered" >      unused_opt = "last-param";</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return unused_opt;</span>
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  var _warnUnused = <span class="fstat-no" title="function not covered" >function(name, tkn, type, unused_opt) {</span></span>
+<span class="cstat-no" title="statement not covered" >    var line = tkn.line;</span>
+<span class="cstat-no" title="statement not covered" >    var chr  = tkn.from;</span>
+<span class="cstat-no" title="statement not covered" >    var raw_name = tkn.raw_text || name;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    unused_opt = _getUnusedOption(unused_opt);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var warnable_types = {</span>
+      "vars": ["var"],
+      "last-param": ["var", "param"],
+      "strict": ["var", "param", "last-param"]
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (unused_opt) {</span>
+<span class="cstat-no" title="statement not covered" >      if (warnable_types[unused_opt] &amp;&amp; warnable_types[unused_opt].indexOf(type) !== -1) {</span>
+<span class="cstat-no" title="statement not covered" >        warning("W098", { line: line, from: chr }, raw_name);</span>
+      }
+    }
+&nbsp;
+    // inconsistent - see gh-1894
+<span class="cstat-no" title="statement not covered" >    if (unused_opt || type === "var") {</span>
+<span class="cstat-no" title="statement not covered" >      unuseds.push({</span>
+        name: name,
+        line: line,
+        character: chr
+      });
+    }
+  };
+&nbsp;
+  /**
+   * Checks the current scope for unused identifiers
+   */
+<span class="fstat-no" title="function not covered" >  function _checkForUnused() {</span>
+    // function params are handled specially
+    // assume that parameters are the only thing declared in the param scope
+<span class="cstat-no" title="statement not covered" >    if (_current["(type)"] === "functionparams") {</span>
+<span class="cstat-no" title="statement not covered" >      _checkParams();</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+<span class="cstat-no" title="statement not covered" >    var curentLabels = _current["(labels)"];</span>
+<span class="cstat-no" title="statement not covered" >    for (var labelName in curentLabels) {</span>
+<span class="cstat-no" title="statement not covered" >      if (curentLabels[labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >        if (curentLabels[labelName]["(type)"] !== "exception" &amp;&amp;</span>
+          curentLabels[labelName]["(unused)"]) {
+<span class="cstat-no" title="statement not covered" >          _warnUnused(labelName, curentLabels[labelName]["(token)"], "var");</span>
+        }
+      }
+    }
+  }
+&nbsp;
+  /**
+   * Checks the current scope for unused parameters
+   * Must be called in a function parameter scope
+   */
+<span class="fstat-no" title="function not covered" >  function _checkParams() {</span>
+<span class="cstat-no" title="statement not covered" >    var params = _current["(params)"];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (!params) {</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var param = params.pop();</span>
+<span class="cstat-no" title="statement not covered" >    var unused_opt;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    while (param) {</span>
+<span class="cstat-no" title="statement not covered" >      var label = _current["(labels)"][param];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      unused_opt = _getUnusedOption(state.funct["(unusedOption)"]);</span>
+&nbsp;
+      // 'undefined' is a special case for (function(window, undefined) { ... })();
+      // patterns.
+<span class="cstat-no" title="statement not covered" >      if (param === "undefined")</span>
+<span class="cstat-no" title="statement not covered" >        return;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (label["(unused)"]) {</span>
+<span class="cstat-no" title="statement not covered" >        _warnUnused(param, label["(token)"], "param", state.funct["(unusedOption)"]);</span>
+      } else <span class="cstat-no" title="statement not covered" >if (unused_opt === "last-param") {</span>
+<span class="cstat-no" title="statement not covered" >        return;</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      param = params.pop();</span>
+    }
+  }
+&nbsp;
+  /**
+   * Finds the relevant label's scope, searching from nearest outwards
+   * @returns {Object} the scope the label was found in
+   */
+<span class="fstat-no" title="function not covered" >  function _getLabel(labelName) {</span>
+<span class="cstat-no" title="statement not covered" >    for (var i = _scopeStack.length - 1 ; i &gt;= 0; --i) {</span>
+<span class="cstat-no" title="statement not covered" >      var scopeLabels = _scopeStack[i]["(labels)"];</span>
+<span class="cstat-no" title="statement not covered" >      if (scopeLabels[labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >        return scopeLabels;</span>
+      }
+    }
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function usedSoFarInCurrentFunction(labelName) {</span>
+    // used so far in this whole function and any sub functions
+<span class="cstat-no" title="statement not covered" >    for (var i = _scopeStack.length - 1; i &gt;= 0; i--) {</span>
+<span class="cstat-no" title="statement not covered" >      var current = _scopeStack[i];</span>
+<span class="cstat-no" title="statement not covered" >      if (current["(usages)"][labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >        return current["(usages)"][labelName];</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (current === _currentFunctBody) {</span>
+<span class="cstat-no" title="statement not covered" >        break;</span>
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    return false;</span>
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function _checkOuterShadow(labelName, token) {</span>
+&nbsp;
+    // only check if shadow is outer
+<span class="cstat-no" title="statement not covered" >    if (state.option.shadow !== "outer") {</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var isGlobal = _currentFunctBody["(type)"] === "global",</span>
+      isNewFunction = _current["(type)"] === "functionparams";
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var outsideCurrentFunction = !isGlobal;</span>
+<span class="cstat-no" title="statement not covered" >    for (var i = 0; i &lt; _scopeStack.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >      var stackItem = _scopeStack[i];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (!isNewFunction &amp;&amp; _scopeStack[i + 1] === _currentFunctBody) {</span>
+<span class="cstat-no" title="statement not covered" >        outsideCurrentFunction = false;</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (outsideCurrentFunction &amp;&amp; stackItem["(labels)"][labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >        warning("W123", token, labelName);</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (stackItem["(breakLabels)"][labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >        warning("W123", token, labelName);</span>
+      }
+    }
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  function _latedefWarning(type, labelName, token) {</span>
+<span class="cstat-no" title="statement not covered" >    if (state.option.latedef) {</span>
+      // if either latedef is strict and this is a function
+      //    or this is not a function
+<span class="cstat-no" title="statement not covered" >      if ((state.option.latedef === true &amp;&amp; type === "function") ||</span>
+        type !== "function") {
+<span class="cstat-no" title="statement not covered" >        warning("W003", token, labelName);</span>
+      }
+    }
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  var scopeManagerInst = {</span>
+&nbsp;
+    on: <span class="fstat-no" title="function not covered" >function(names, listener) {</span>
+<span class="cstat-no" title="statement not covered" >      names.split(" ").forEach(<span class="fstat-no" title="function not covered" >function(name) {</span></span>
+<span class="cstat-no" title="statement not covered" >        emitter.on(name, listener);</span>
+      });
+    },
+&nbsp;
+    isPredefined: <span class="fstat-no" title="function not covered" >function(labelName) {</span>
+<span class="cstat-no" title="statement not covered" >      return !this.has(labelName) &amp;&amp; _.has(_scopeStack[0]["(predefined)"], labelName);</span>
+    },
+&nbsp;
+    /**
+     * Tell the manager we are entering a new block of code
+     * @param {string} [type] - The type of the block. Valid values are
+     *                          "functionparams", "catchparams" and
+     *                          "functionouter"
+     */
+    stack: <span class="fstat-no" title="function not covered" >function(type) {</span>
+<span class="cstat-no" title="statement not covered" >      var previousScope = _current;</span>
+<span class="cstat-no" title="statement not covered" >      _newScope(type);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (!type &amp;&amp; previousScope["(type)"] === "functionparams") {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _current["(isFuncBody)"] = true;</span>
+<span class="cstat-no" title="statement not covered" >        _current["(context)"] = _currentFunctBody;</span>
+<span class="cstat-no" title="statement not covered" >        _currentFunctBody = _current;</span>
+      }
+    },
+&nbsp;
+    unstack: <span class="fstat-no" title="function not covered" >function() {</span>
+      // jshint proto: true
+<span class="cstat-no" title="statement not covered" >      var subScope = _scopeStack.length &gt; 1 ? _scopeStack[_scopeStack.length - 2] : null;</span>
+<span class="cstat-no" title="statement not covered" >      var isUnstackingFunctionBody = _current === _currentFunctBody,</span>
+        isUnstackingFunctionParams = _current["(type)"] === "functionparams",
+        isUnstackingFunctionOuter = _current["(type)"] === "functionouter";
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      var i, j;</span>
+<span class="cstat-no" title="statement not covered" >      var currentUsages = _current["(usages)"];</span>
+<span class="cstat-no" title="statement not covered" >      var currentLabels = _current["(labels)"];</span>
+<span class="cstat-no" title="statement not covered" >      var usedLabelNameList = Object.keys(currentUsages);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (currentUsages.__proto__ &amp;&amp; usedLabelNameList.indexOf("__proto__") === -1) {</span>
+<span class="cstat-no" title="statement not covered" >        usedLabelNameList.push("__proto__");</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      for (i = 0; i &lt; usedLabelNameList.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >        var usedLabelName = usedLabelNameList[i];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        var usage = currentUsages[usedLabelName];</span>
+<span class="cstat-no" title="statement not covered" >        var usedLabel = currentLabels[usedLabelName];</span>
+<span class="cstat-no" title="statement not covered" >        if (usedLabel) {</span>
+<span class="cstat-no" title="statement not covered" >          var usedLabelType = usedLabel["(type)"];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          if (usedLabel["(useOutsideOfScope)"] &amp;&amp; !state.option.funcscope) {</span>
+<span class="cstat-no" title="statement not covered" >            var usedTokens = usage["(tokens)"];</span>
+<span class="cstat-no" title="statement not covered" >            if (usedTokens) {</span>
+<span class="cstat-no" title="statement not covered" >              for (j = 0; j &lt; usedTokens.length; j++) {</span>
+                // Keep the consistency of https://github.com/jshint/jshint/issues/2409
+<span class="cstat-no" title="statement not covered" >                if (usedLabel["(function)"] === usedTokens[j]["(function)"]) {</span>
+<span class="cstat-no" title="statement not covered" >                  error("W038", usedTokens[j], usedLabelName);</span>
+                }
+              }
+            }
+          }
+&nbsp;
+          // mark the label used
+<span class="cstat-no" title="statement not covered" >          _current["(labels)"][usedLabelName]["(unused)"] = false;</span>
+&nbsp;
+          // check for modifying a const
+<span class="cstat-no" title="statement not covered" >          if (usedLabelType === "const" &amp;&amp; usage["(modified)"]) {</span>
+<span class="cstat-no" title="statement not covered" >            for (j = 0; j &lt; usage["(modified)"].length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >              error("E013", usage["(modified)"][j], usedLabelName);</span>
+            }
+          }
+&nbsp;
+          // check for re-assigning a function declaration
+<span class="cstat-no" title="statement not covered" >          if ((usedLabelType === "function" || usedLabelType === "class") &amp;&amp;</span>
+              usage["(reassigned)"]) {
+<span class="cstat-no" title="statement not covered" >            for (j = 0; j &lt; usage["(reassigned)"].length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >              if (!usage["(reassigned)"][j].ignoreW021) {</span>
+<span class="cstat-no" title="statement not covered" >                warning("W021", usage["(reassigned)"][j], usedLabelName, usedLabelType);</span>
+              }
+            }
+          }
+<span class="cstat-no" title="statement not covered" >          continue;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (isUnstackingFunctionOuter) {</span>
+<span class="cstat-no" title="statement not covered" >          state.funct["(isCapturing)"] = true;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (subScope) {</span>
+          // not exiting the global scope, so copy the usage down in case its an out of scope usage
+<span class="cstat-no" title="statement not covered" >          if (!subScope["(usages)"][usedLabelName]) {</span>
+<span class="cstat-no" title="statement not covered" >            subScope["(usages)"][usedLabelName] = usage;</span>
+<span class="cstat-no" title="statement not covered" >            if (isUnstackingFunctionBody) {</span>
+<span class="cstat-no" title="statement not covered" >              subScope["(usages)"][usedLabelName]["(onlyUsedSubFunction)"] = true;</span>
+            }
+          } else {
+<span class="cstat-no" title="statement not covered" >            var subScopeUsage = subScope["(usages)"][usedLabelName];</span>
+<span class="cstat-no" title="statement not covered" >            subScopeUsage["(modified)"] = subScopeUsage["(modified)"].concat(usage["(modified)"]);</span>
+<span class="cstat-no" title="statement not covered" >            subScopeUsage["(tokens)"] = subScopeUsage["(tokens)"].concat(usage["(tokens)"]);</span>
+<span class="cstat-no" title="statement not covered" >            subScopeUsage["(reassigned)"] =</span>
+              subScopeUsage["(reassigned)"].concat(usage["(reassigned)"]);
+          }
+        } else {
+          // this is exiting global scope, so we finalise everything here - we are at the end of the file
+<span class="cstat-no" title="statement not covered" >          if (typeof _current["(predefined)"][usedLabelName] === "boolean") {</span>
+&nbsp;
+            // remove the declared token, so we know it is used
+<span class="cstat-no" title="statement not covered" >            delete declared[usedLabelName];</span>
+&nbsp;
+            // note it as used so it can be reported
+<span class="cstat-no" title="statement not covered" >            usedPredefinedAndGlobals[usedLabelName] = marker;</span>
+&nbsp;
+            // check for re-assigning a read-only (set to false) predefined
+<span class="cstat-no" title="statement not covered" >            if (_current["(predefined)"][usedLabelName] === false &amp;&amp; usage["(reassigned)"]) {</span>
+<span class="cstat-no" title="statement not covered" >              for (j = 0; j &lt; usage["(reassigned)"].length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                if (!usage["(reassigned)"][j].ignoreW020) {</span>
+<span class="cstat-no" title="statement not covered" >                  warning("W020", usage["(reassigned)"][j]);</span>
+                }
+              }
+            }
+          }
+          else {
+            // label usage is not predefined and we have not found a declaration
+            // so report as undeclared
+<span class="cstat-no" title="statement not covered" >            if (usage["(tokens)"]) {</span>
+<span class="cstat-no" title="statement not covered" >              for (j = 0; j &lt; usage["(tokens)"].length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                var undefinedToken = usage["(tokens)"][j];</span>
+                // if its not a forgiven undefined (e.g. typof x)
+<span class="cstat-no" title="statement not covered" >                if (!undefinedToken.forgiveUndef) {</span>
+                  // if undef is on and undef was on when the token was defined
+<span class="cstat-no" title="statement not covered" >                  if (state.option.undef &amp;&amp; !undefinedToken.ignoreUndef) {</span>
+<span class="cstat-no" title="statement not covered" >                    warning("W117", undefinedToken, usedLabelName);</span>
+                  }
+<span class="cstat-no" title="statement not covered" >                  if (impliedGlobals[usedLabelName]) {</span>
+<span class="cstat-no" title="statement not covered" >                    impliedGlobals[usedLabelName].line.push(undefinedToken.line);</span>
+                  } else {
+<span class="cstat-no" title="statement not covered" >                    impliedGlobals[usedLabelName] = {</span>
+                      name: usedLabelName,
+                      line: [undefinedToken.line]
+                    };
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+&nbsp;
+      // if exiting the global scope, we can warn about declared globals that haven't been used yet
+<span class="cstat-no" title="statement not covered" >      if (!subScope) {</span>
+<span class="cstat-no" title="statement not covered" >        Object.keys(declared)</span>
+          .forEach(<span class="fstat-no" title="function not covered" >function(labelNotUsed) {</span>
+<span class="cstat-no" title="statement not covered" >            _warnUnused(labelNotUsed, declared[labelNotUsed], "var");</span>
+          });
+      }
+&nbsp;
+      // If this is not a function boundary, transfer function-scoped labels to
+      // the parent block (a rough simulation of variable hoisting). Previously
+      // existing labels in the parent block should take precedence so that things and stuff.
+<span class="cstat-no" title="statement not covered" >      if (subScope &amp;&amp; !isUnstackingFunctionBody &amp;&amp;</span>
+        !isUnstackingFunctionParams &amp;&amp; !isUnstackingFunctionOuter) {
+<span class="cstat-no" title="statement not covered" >        var labelNames = Object.keys(currentLabels);</span>
+<span class="cstat-no" title="statement not covered" >        for (i = 0; i &lt; labelNames.length; i++) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          var defLabelName = labelNames[i];</span>
+<span class="cstat-no" title="statement not covered" >          var defLabel = currentLabels[defLabelName];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          if (!defLabel["(blockscoped)"] &amp;&amp; defLabel["(type)"] !== "exception") {</span>
+<span class="cstat-no" title="statement not covered" >            var shadowed = subScope["(labels)"][defLabelName];</span>
+&nbsp;
+            // Do not overwrite a label if it exists in the parent scope
+            // because it is shared by adjacent blocks. Copy the `unused`
+            // property so that any references found within the current block
+            // are counted toward that higher-level declaration.
+<span class="cstat-no" title="statement not covered" >            if (shadowed) {</span>
+<span class="cstat-no" title="statement not covered" >              shadowed["(unused)"] &amp;= defLabel["(unused)"];</span>
+&nbsp;
+            // "Hoist" the variable to the parent block, decorating the label
+            // so that future references, though technically valid, can be
+            // reported as "out-of-scope" in the absence of the `funcscope`
+            // option.
+            } else {
+<span class="cstat-no" title="statement not covered" >              defLabel["(useOutsideOfScope)"] =</span>
+                // Do not warn about out-of-scope usages in the global scope
+                _currentFunctBody["(type)"] !== "global" &amp;&amp;
+                // When a higher scope contains a binding for the label, the
+                // label is a re-declaration and should not prompt "used
+                // out-of-scope" warnings.
+                !this.funct.has(defLabelName, { excludeCurrent: true });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >              subScope["(labels)"][defLabelName] = defLabel;</span>
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            delete currentLabels[defLabelName];</span>
+          }
+        }
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      _checkForUnused();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      _scopeStack.pop();</span>
+<span class="cstat-no" title="statement not covered" >      if (isUnstackingFunctionBody) {</span>
+<span class="cstat-no" title="statement not covered" >        _currentFunctBody = _scopeStack[_.findLastIndex(_scopeStack, <span class="fstat-no" title="function not covered" >function(scope) {</span></span>
+          // if function or if global (which is at the bottom so it will only return true if we call back)
+<span class="cstat-no" title="statement not covered" >          return scope["(isFuncBody)"] || scope["(type)"] === "global";</span>
+        })];
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      _current = subScope;</span>
+    },
+&nbsp;
+    /**
+     * Add a param to the current scope
+     * @param {string} labelName
+     * @param {Token} token
+     * @param {string} [type="param"] param type
+     */
+    addParam: <span class="fstat-no" title="function not covered" >function(labelName, token, type) {</span>
+<span class="cstat-no" title="statement not covered" >      type = type || "param";</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (type === "exception") {</span>
+        // if defined in the current function
+<span class="cstat-no" title="statement not covered" >        var previouslyDefinedLabelType = this.funct.labeltype(labelName);</span>
+<span class="cstat-no" title="statement not covered" >        if (previouslyDefinedLabelType &amp;&amp; previouslyDefinedLabelType !== "exception") {</span>
+          // and has not been used yet in the current function scope
+<span class="cstat-no" title="statement not covered" >          if (!state.option.node) {</span>
+<span class="cstat-no" title="statement not covered" >            warning("W002", state.tokens.next, labelName);</span>
+          }
+        }
+      }
+&nbsp;
+      // The variable was declared in the current scope
+<span class="cstat-no" title="statement not covered" >      if (_.has(_current["(labels)"], labelName)) {</span>
+<span class="cstat-no" title="statement not covered" >        _current["(labels)"][labelName].duplicated = true;</span>
+&nbsp;
+      // The variable was declared in an outer scope
+      } else {
+        // if this scope has the variable defined, it's a re-definition error
+<span class="cstat-no" title="statement not covered" >        _checkOuterShadow(labelName, token, type);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _current["(labels)"][labelName] = {</span>
+          "(type)" : type,
+          "(token)": token,
+          "(unused)": true };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _current["(params)"].push(labelName);</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (_.has(_current["(usages)"], labelName)) {</span>
+<span class="cstat-no" title="statement not covered" >        var usage = _current["(usages)"][labelName];</span>
+        // if its in a sub function it is not necessarily an error, just latedef
+<span class="cstat-no" title="statement not covered" >        if (usage["(onlyUsedSubFunction)"]) {</span>
+<span class="cstat-no" title="statement not covered" >          _latedefWarning(type, labelName, token);</span>
+        } else {
+          // this is a clear illegal usage for block scoped variables
+<span class="cstat-no" title="statement not covered" >          warning("E056", token, labelName, type);</span>
+        }
+      }
+    },
+&nbsp;
+    validateParams: <span class="fstat-no" title="function not covered" >function() {</span>
+      // This method only concerns errors for function parameters
+<span class="cstat-no" title="statement not covered" >      if (_currentFunctBody["(type)"] === "global") {</span>
+<span class="cstat-no" title="statement not covered" >        return;</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      var isStrict = state.isStrict();</span>
+<span class="cstat-no" title="statement not covered" >      var currentFunctParamScope = _currentFunctBody["(parent)"];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (!currentFunctParamScope["(params)"]) {</span>
+<span class="cstat-no" title="statement not covered" >        return;</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      currentFunctParamScope["(params)"].forEach(<span class="fstat-no" title="function not covered" >function(labelName) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var label = currentFunctParamScope["(labels)"][labelName];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (label &amp;&amp; label.duplicated) {</span>
+<span class="cstat-no" title="statement not covered" >          if (isStrict) {</span>
+<span class="cstat-no" title="statement not covered" >            warning("E011", label["(token)"], labelName);</span>
+          } else <span class="cstat-no" title="statement not covered" >if (state.option.shadow !== true) {</span>
+<span class="cstat-no" title="statement not covered" >            warning("W004", label["(token)"], labelName);</span>
+          }
+        }
+      });
+    },
+&nbsp;
+    getUsedOrDefinedGlobals: <span class="fstat-no" title="function not covered" >function() {</span>
+      // jshint proto: true
+<span class="cstat-no" title="statement not covered" >      var list = Object.keys(usedPredefinedAndGlobals);</span>
+&nbsp;
+      // If `__proto__` is used as a global variable name, its entry in the
+      // lookup table may not be enumerated by `Object.keys` (depending on the
+      // environment).
+<span class="cstat-no" title="statement not covered" >      if (usedPredefinedAndGlobals.__proto__ === marker &amp;&amp;</span>
+        list.indexOf("__proto__") === -1) {
+<span class="cstat-no" title="statement not covered" >        list.push("__proto__");</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return list;</span>
+    },
+&nbsp;
+    /**
+     * Gets an array of implied globals
+     * @returns {Array.&lt;{ name: string, line: Array.&lt;number&gt;}&gt;}
+     */
+    getImpliedGlobals: <span class="fstat-no" title="function not covered" >function() {</span>
+      // jshint proto: true
+<span class="cstat-no" title="statement not covered" >      var values = _.values(impliedGlobals);</span>
+<span class="cstat-no" title="statement not covered" >      var hasProto = false;</span>
+&nbsp;
+      // If `__proto__` is an implied global variable, its entry in the lookup
+      // table may not be enumerated by `_.values` (depending on the
+      // environment).
+<span class="cstat-no" title="statement not covered" >      if (impliedGlobals.__proto__) {</span>
+<span class="cstat-no" title="statement not covered" >        hasProto = values.some(<span class="fstat-no" title="function not covered" >function(value) {</span></span>
+<span class="cstat-no" title="statement not covered" >          return value.name === "__proto__";</span>
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (!hasProto) {</span>
+<span class="cstat-no" title="statement not covered" >          values.push(impliedGlobals.__proto__);</span>
+        }
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return values;</span>
+    },
+&nbsp;
+    /**
+     * Returns a list of unused variables
+     * @returns {Array}
+     */
+    getUnuseds: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      return unuseds;</span>
+    },
+&nbsp;
+    has: <span class="fstat-no" title="function not covered" >function(labelName) {</span>
+<span class="cstat-no" title="statement not covered" >      return Boolean(_getLabel(labelName));</span>
+    },
+&nbsp;
+    labeltype: <span class="fstat-no" title="function not covered" >function(labelName) {</span>
+      // returns a labels type or null if not present
+<span class="cstat-no" title="statement not covered" >      var scopeLabels = _getLabel(labelName);</span>
+<span class="cstat-no" title="statement not covered" >      if (scopeLabels) {</span>
+<span class="cstat-no" title="statement not covered" >        return scopeLabels[labelName]["(type)"];</span>
+      }
+<span class="cstat-no" title="statement not covered" >      return null;</span>
+    },
+&nbsp;
+    /**
+     * for the exported options, indicating a variable is used outside the file
+     */
+    addExported: <span class="fstat-no" title="function not covered" >function(labelName) {</span>
+<span class="cstat-no" title="statement not covered" >      var globalLabels = _scopeStack[0]["(labels)"];</span>
+<span class="cstat-no" title="statement not covered" >      if (_.has(declared, labelName)) {</span>
+        // remove the declared token, so we know it is used
+<span class="cstat-no" title="statement not covered" >        delete declared[labelName];</span>
+      } else <span class="cstat-no" title="statement not covered" >if (_.has(globalLabels, labelName)) {</span>
+<span class="cstat-no" title="statement not covered" >        globalLabels[labelName]["(unused)"] = false;</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        for (var i = 1; i &lt; _scopeStack.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >          var scope = _scopeStack[i];</span>
+          // if `scope.(type)` is not defined, it is a block scope
+<span class="cstat-no" title="statement not covered" >          if (!scope["(type)"]) {</span>
+<span class="cstat-no" title="statement not covered" >            if (_.has(scope["(labels)"], labelName) &amp;&amp;</span>
+                !scope["(labels)"][labelName]["(blockscoped)"]) {
+<span class="cstat-no" title="statement not covered" >              scope["(labels)"][labelName]["(unused)"] = false;</span>
+<span class="cstat-no" title="statement not covered" >              return;</span>
+            }
+          } else {
+<span class="cstat-no" title="statement not covered" >            break;</span>
+          }
+        }
+<span class="cstat-no" title="statement not covered" >        exported[labelName] = true;</span>
+      }
+    },
+&nbsp;
+    /**
+     * Mark an indentifier as es6 module exported
+     */
+    setExported: <span class="fstat-no" title="function not covered" >function(labelName, token) {</span>
+<span class="cstat-no" title="statement not covered" >      this.block.use(labelName, token);</span>
+    },
+&nbsp;
+    initialize: <span class="fstat-no" title="function not covered" >function(labelName) {</span>
+<span class="cstat-no" title="statement not covered" >      if (_current["(labels)"][labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >        _current["(labels)"][labelName]["(initialized)"] = true;</span>
+      }
+    },
+&nbsp;
+    /**
+     * adds an indentifier to the relevant current scope and creates warnings/errors as necessary
+     * @param {string} labelName
+     * @param {Object} opts
+     * @param {String} opts.type - the type of the label e.g. "param", "var", "let, "const", "function"
+     * @param {Token} opts.token - the token pointing at the declaration
+     * @param {boolean} opts.initialized - whether the binding should be created in an "initialized" state.
+     */
+    addlabel: <span class="fstat-no" title="function not covered" >function(labelName, opts) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      var type  = opts.type;</span>
+<span class="cstat-no" title="statement not covered" >      var token = opts.token;</span>
+<span class="cstat-no" title="statement not covered" >      var isblockscoped = type === "let" || type === "const" || type === "class";</span>
+<span class="cstat-no" title="statement not covered" >      var isexported    = (isblockscoped ? _current : _currentFunctBody)["(type)"] === "global" &amp;&amp;</span>
+                          _.has(exported, labelName);
+&nbsp;
+      // outer shadow check (inner is only on non-block scoped)
+<span class="cstat-no" title="statement not covered" >      _checkOuterShadow(labelName, token, type);</span>
+&nbsp;
+      // if is block scoped (let or const)
+<span class="cstat-no" title="statement not covered" >      if (isblockscoped) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        var declaredInCurrentScope = _current["(labels)"][labelName];</span>
+        // for block scoped variables, params are seen in the current scope as the root function
+        // scope, so check these too.
+<span class="cstat-no" title="statement not covered" >        if (!declaredInCurrentScope &amp;&amp; _current === _currentFunctBody &amp;&amp;</span>
+          _current["(type)"] !== "global") {
+<span class="cstat-no" title="statement not covered" >          declaredInCurrentScope = !!_currentFunctBody["(parent)"]["(labels)"][labelName];</span>
+        }
+&nbsp;
+        // if its not already defined (which is an error, so ignore) and is used in TDZ
+<span class="cstat-no" title="statement not covered" >        if (!declaredInCurrentScope &amp;&amp; _current["(usages)"][labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >          var usage = _current["(usages)"][labelName];</span>
+          // if its in a sub function it is not necessarily an error, just latedef
+<span class="cstat-no" title="statement not covered" >          if (usage["(onlyUsedSubFunction)"]) {</span>
+<span class="cstat-no" title="statement not covered" >            _latedefWarning(type, labelName, token);</span>
+          } else {
+            // this is a clear illegal usage for block scoped variables
+<span class="cstat-no" title="statement not covered" >            warning("E056", token, labelName, type);</span>
+          }
+        }
+&nbsp;
+        // if this scope has the variable defined, its a re-definition error
+<span class="cstat-no" title="statement not covered" >        if (declaredInCurrentScope) {</span>
+<span class="cstat-no" title="statement not covered" >          warning("E011", token, labelName);</span>
+        }
+        else <span class="cstat-no" title="statement not covered" >if (state.option.shadow === "outer") {</span>
+&nbsp;
+          // if shadow is outer, for block scope we want to detect any shadowing within this function
+<span class="cstat-no" title="statement not covered" >          if (scopeManagerInst.funct.has(labelName)) {</span>
+<span class="cstat-no" title="statement not covered" >            warning("W004", token, labelName);</span>
+          }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        scopeManagerInst.block.add(</span>
+          labelName, type, token, !isexported, opts.initialized
+        );
+&nbsp;
+      } else {
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        var declaredInCurrentFunctionScope = scopeManagerInst.funct.has(labelName);</span>
+&nbsp;
+        // check for late definition, ignore if already declared
+<span class="cstat-no" title="statement not covered" >        if (!declaredInCurrentFunctionScope &amp;&amp; usedSoFarInCurrentFunction(labelName)) {</span>
+<span class="cstat-no" title="statement not covered" >          _latedefWarning(type, labelName, token);</span>
+        }
+&nbsp;
+        // defining with a var or a function when a block scope variable of the same name
+        // is in scope is an error
+<span class="cstat-no" title="statement not covered" >        if (scopeManagerInst.funct.has(labelName, { onlyBlockscoped: true })) {</span>
+<span class="cstat-no" title="statement not covered" >          warning("E011", token, labelName);</span>
+        } else <span class="cstat-no" title="statement not covered" >if (state.option.shadow !== true) {</span>
+          // now since we didn't get any block scope variables, test for var/function
+          // shadowing
+<span class="cstat-no" title="statement not covered" >          if (declaredInCurrentFunctionScope &amp;&amp; labelName !== "__proto__") {</span>
+&nbsp;
+            // see https://github.com/jshint/jshint/issues/2400
+<span class="cstat-no" title="statement not covered" >            if (_currentFunctBody["(type)"] !== "global") {</span>
+<span class="cstat-no" title="statement not covered" >              warning("W004", token, labelName);</span>
+            }
+          }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        scopeManagerInst.funct.add(labelName, type, token, !isexported);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (_currentFunctBody["(type)"] === "global" &amp;&amp; !state.impliedClosure()) {</span>
+<span class="cstat-no" title="statement not covered" >          usedPredefinedAndGlobals[labelName] = marker;</span>
+        }
+      }
+    },
+&nbsp;
+    funct: {
+      /**
+       * Returns the label type given certain options
+       * @param labelName
+       * @param {Object=} options
+       * @param {Boolean=} options.onlyBlockscoped - only include block scoped labels
+       * @param {Boolean=} options.excludeParams - exclude the param scope
+       * @param {Boolean=} options.excludeCurrent - exclude the current scope
+       * @returns {String}
+       */
+      labeltype: <span class="fstat-no" title="function not covered" >function(labelName, options) {</span>
+<span class="cstat-no" title="statement not covered" >        var onlyBlockscoped = options &amp;&amp; options.onlyBlockscoped;</span>
+<span class="cstat-no" title="statement not covered" >        var excludeParams = options &amp;&amp; options.excludeParams;</span>
+<span class="cstat-no" title="statement not covered" >        var currentScopeIndex = _scopeStack.length - (options &amp;&amp; options.excludeCurrent ? 2 : 1);</span>
+<span class="cstat-no" title="statement not covered" >        for (var i = currentScopeIndex; i &gt;= 0; i--) {</span>
+<span class="cstat-no" title="statement not covered" >          var current = _scopeStack[i];</span>
+<span class="cstat-no" title="statement not covered" >          if (current["(labels)"][labelName] &amp;&amp;</span>
+            (!onlyBlockscoped || current["(labels)"][labelName]["(blockscoped)"])) {
+<span class="cstat-no" title="statement not covered" >            return current["(labels)"][labelName]["(type)"];</span>
+          }
+<span class="cstat-no" title="statement not covered" >          var scopeCheck = excludeParams ? _scopeStack[ i - 1 ] : current;</span>
+<span class="cstat-no" title="statement not covered" >          if (scopeCheck &amp;&amp; scopeCheck["(type)"] === "functionparams") {</span>
+<span class="cstat-no" title="statement not covered" >            return null;</span>
+          }
+        }
+<span class="cstat-no" title="statement not covered" >        return null;</span>
+      },
+      /**
+       * Returns if a break label exists in the function scope
+       * @param {string} labelName
+       * @returns {boolean}
+       */
+      hasBreakLabel: <span class="fstat-no" title="function not covered" >function(labelName) {</span>
+<span class="cstat-no" title="statement not covered" >        for (var i = _scopeStack.length - 1; i &gt;= 0; i--) {</span>
+<span class="cstat-no" title="statement not covered" >          var current = _scopeStack[i];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          if (current["(breakLabels)"][labelName]) {</span>
+<span class="cstat-no" title="statement not covered" >            return true;</span>
+          }
+<span class="cstat-no" title="statement not covered" >          if (current["(type)"] === "functionparams") {</span>
+<span class="cstat-no" title="statement not covered" >            return false;</span>
+          }
+        }
+<span class="cstat-no" title="statement not covered" >        return false;</span>
+      },
+      /**
+       * Returns if the label is in the current function scope
+       * See scopeManager.funct.labelType for options
+       */
+      has: <span class="fstat-no" title="function not covered" >function(labelName, options) {</span>
+<span class="cstat-no" title="statement not covered" >        return Boolean(this.labeltype(labelName, options));</span>
+      },
+&nbsp;
+      /**
+       * Adds a new function scoped variable
+       * see block.add for block scoped
+       */
+      add: <span class="fstat-no" title="function not covered" >function(labelName, type, tok, unused) {</span>
+<span class="cstat-no" title="statement not covered" >        _current["(labels)"][labelName] = {</span>
+          "(type)" : type,
+          "(token)": tok,
+          "(blockscoped)": false,
+          "(function)": _currentFunctBody,
+          "(unused)": unused };
+      }
+    },
+&nbsp;
+    block: {
+&nbsp;
+      /**
+       * is the current block global?
+       * @returns Boolean
+       */
+      isGlobal: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >        return _current["(type)"] === "global";</span>
+      },
+&nbsp;
+      use: <span class="fstat-no" title="function not covered" >function(labelName, token) {</span>
+&nbsp;
+        // if resolves to current function params, then do not store usage just resolve
+        // this is because function(a) { var a; a = a; } will resolve to the param, not
+        // to the unset var
+        // first check the param is used
+<span class="cstat-no" title="statement not covered" >        var paramScope = _currentFunctBody["(parent)"];</span>
+<span class="cstat-no" title="statement not covered" >        if (paramScope &amp;&amp; paramScope["(labels)"][labelName] &amp;&amp;</span>
+          paramScope["(labels)"][labelName]["(type)"] === "param") {
+&nbsp;
+          // then check its not declared by a block scope variable
+<span class="cstat-no" title="statement not covered" >          if (!scopeManagerInst.funct.has(labelName,</span>
+                { excludeParams: true, onlyBlockscoped: true })) {
+<span class="cstat-no" title="statement not covered" >            paramScope["(labels)"][labelName]["(unused)"] = false;</span>
+          }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (token &amp;&amp; (state.ignored.W117 || state.option.undef === false)) {</span>
+<span class="cstat-no" title="statement not covered" >          token.ignoreUndef = true;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _setupUsages(labelName);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _current["(usages)"][labelName]["(onlyUsedSubFunction)"] = false;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (token) {</span>
+<span class="cstat-no" title="statement not covered" >          token["(function)"] = _currentFunctBody;</span>
+<span class="cstat-no" title="statement not covered" >          _current["(usages)"][labelName]["(tokens)"].push(token);</span>
+        }
+&nbsp;
+        // blockscoped vars can't be used within their initializer (TDZ)
+<span class="cstat-no" title="statement not covered" >        var label = _current["(labels)"][labelName];</span>
+<span class="cstat-no" title="statement not covered" >        if (label &amp;&amp; label["(blockscoped)"] &amp;&amp; !label["(initialized)"]) {</span>
+<span class="cstat-no" title="statement not covered" >          error("E056", token, labelName, label["(type)"]);</span>
+        }
+      },
+&nbsp;
+      reassign: <span class="fstat-no" title="function not covered" >function(labelName, token) {</span>
+<span class="cstat-no" title="statement not covered" >        token.ignoreW020 = state.ignored.W020;</span>
+<span class="cstat-no" title="statement not covered" >        token.ignoreW021 = state.ignored.W021;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        this.modify(labelName, token);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _current["(usages)"][labelName]["(reassigned)"].push(token);</span>
+      },
+&nbsp;
+      modify: <span class="fstat-no" title="function not covered" >function(labelName, token) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _setupUsages(labelName);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _current["(usages)"][labelName]["(onlyUsedSubFunction)"] = false;</span>
+<span class="cstat-no" title="statement not covered" >        _current["(usages)"][labelName]["(modified)"].push(token);</span>
+      },
+&nbsp;
+      /**
+       * Adds a new variable
+       */
+      add: <span class="fstat-no" title="function not covered" >function(labelName, type, tok, unused, initialized) {</span>
+<span class="cstat-no" title="statement not covered" >        _current["(labels)"][labelName] = {</span>
+          "(type)" : type,
+          "(token)": tok,
+          "(initialized)": !!initialized,
+          "(blockscoped)": true,
+          "(unused)": unused };
+      },
+&nbsp;
+      addBreakLabel: <span class="fstat-no" title="function not covered" >function(labelName, opts) {</span>
+<span class="cstat-no" title="statement not covered" >        var token = opts.token;</span>
+<span class="cstat-no" title="statement not covered" >        if (scopeManagerInst.funct.hasBreakLabel(labelName)) {</span>
+<span class="cstat-no" title="statement not covered" >          warning("E011", token, labelName);</span>
+        }
+        else <span class="cstat-no" title="statement not covered" >if (state.option.shadow === "outer") {</span>
+<span class="cstat-no" title="statement not covered" >          if (scopeManagerInst.funct.has(labelName)) {</span>
+<span class="cstat-no" title="statement not covered" >            warning("W004", token, labelName);</span>
+          } else {
+<span class="cstat-no" title="statement not covered" >            _checkOuterShadow(labelName, token);</span>
+          }
+        }
+<span class="cstat-no" title="statement not covered" >        _current["(breakLabels)"][labelName] = token;</span>
+      }
+    }
+  };
+<span class="cstat-no" title="statement not covered" >  return scopeManagerInst;</span>
+};
+&nbsp;
+module.exports = scopeManager;
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Tue Apr 11 2017 05:40:40 GMT+0000 (UTC)</div>
+</div>
+</body>
+</html>
